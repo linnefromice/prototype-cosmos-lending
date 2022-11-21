@@ -47,8 +47,8 @@ func (k Keeper) AddPool(ctx sdk.Context, msg *types.MsgAddPool) (types.PairPool,
 		AssetTotalNormalDeposited:  msg.Amount.Amount.Uint64(),
 		AssetTotalConlyDeposited:   0,
 		AssetTotalBorrowed:         0,
-		ShadowLiquidity:            msg.Amount,            // TODO: use shadow
-		ShadowLpCoinDenom:          msg.Amount.GetDenom(), // TODO: use shadow denom
+		ShadowLiquidity:            NewUsdz(0),
+		ShadowLpCoinDenom:          UsdzDenom,
 		ShadowTotalNormalDeposited: 0,
 		ShadowTotalConlyDeposited:  0,
 		ShadowTotalBorrowed:        0,
