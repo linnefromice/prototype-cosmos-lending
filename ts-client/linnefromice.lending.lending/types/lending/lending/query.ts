@@ -1,5 +1,8 @@
 /* eslint-disable */
+import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
+import { PairPool } from "./pair_pool";
 import { Params } from "./params";
 
 export const protobufPackage = "linnefromice.lending.lending";
@@ -12,6 +15,23 @@ export interface QueryParamsRequest {
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params: Params | undefined;
+}
+
+export interface QueryGetPairPoolRequest {
+  id: number;
+}
+
+export interface QueryGetPairPoolResponse {
+  PairPool: PairPool | undefined;
+}
+
+export interface QueryAllPairPoolRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllPairPoolResponse {
+  PairPool: PairPool[];
+  pagination: PageResponse | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -102,10 +122,225 @@ export const QueryParamsResponse = {
   },
 };
 
+function createBaseQueryGetPairPoolRequest(): QueryGetPairPoolRequest {
+  return { id: 0 };
+}
+
+export const QueryGetPairPoolRequest = {
+  encode(message: QueryGetPairPoolRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPairPoolRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetPairPoolRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPairPoolRequest {
+    return { id: isSet(object.id) ? Number(object.id) : 0 };
+  },
+
+  toJSON(message: QueryGetPairPoolRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetPairPoolRequest>, I>>(object: I): QueryGetPairPoolRequest {
+    const message = createBaseQueryGetPairPoolRequest();
+    message.id = object.id ?? 0;
+    return message;
+  },
+};
+
+function createBaseQueryGetPairPoolResponse(): QueryGetPairPoolResponse {
+  return { PairPool: undefined };
+}
+
+export const QueryGetPairPoolResponse = {
+  encode(message: QueryGetPairPoolResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.PairPool !== undefined) {
+      PairPool.encode(message.PairPool, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPairPoolResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetPairPoolResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.PairPool = PairPool.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPairPoolResponse {
+    return { PairPool: isSet(object.PairPool) ? PairPool.fromJSON(object.PairPool) : undefined };
+  },
+
+  toJSON(message: QueryGetPairPoolResponse): unknown {
+    const obj: any = {};
+    message.PairPool !== undefined && (obj.PairPool = message.PairPool ? PairPool.toJSON(message.PairPool) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetPairPoolResponse>, I>>(object: I): QueryGetPairPoolResponse {
+    const message = createBaseQueryGetPairPoolResponse();
+    message.PairPool = (object.PairPool !== undefined && object.PairPool !== null)
+      ? PairPool.fromPartial(object.PairPool)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllPairPoolRequest(): QueryAllPairPoolRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllPairPoolRequest = {
+  encode(message: QueryAllPairPoolRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllPairPoolRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllPairPoolRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllPairPoolRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllPairPoolRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllPairPoolRequest>, I>>(object: I): QueryAllPairPoolRequest {
+    const message = createBaseQueryAllPairPoolRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllPairPoolResponse(): QueryAllPairPoolResponse {
+  return { PairPool: [], pagination: undefined };
+}
+
+export const QueryAllPairPoolResponse = {
+  encode(message: QueryAllPairPoolResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.PairPool) {
+      PairPool.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllPairPoolResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllPairPoolResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.PairPool.push(PairPool.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllPairPoolResponse {
+    return {
+      PairPool: Array.isArray(object?.PairPool) ? object.PairPool.map((e: any) => PairPool.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllPairPoolResponse): unknown {
+    const obj: any = {};
+    if (message.PairPool) {
+      obj.PairPool = message.PairPool.map((e) => e ? PairPool.toJSON(e) : undefined);
+    } else {
+      obj.PairPool = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllPairPoolResponse>, I>>(object: I): QueryAllPairPoolResponse {
+    const message = createBaseQueryAllPairPoolResponse();
+    message.PairPool = object.PairPool?.map((e) => PairPool.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
+  /** Queries a PairPool by id. */
+  PairPool(request: QueryGetPairPoolRequest): Promise<QueryGetPairPoolResponse>;
+  /** Queries a list of PairPool items. */
+  PairPoolAll(request: QueryAllPairPoolRequest): Promise<QueryAllPairPoolResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -113,17 +348,50 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
+    this.PairPool = this.PairPool.bind(this);
+    this.PairPoolAll = this.PairPoolAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("linnefromice.lending.lending.Query", "Params", data);
     return promise.then((data) => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
+
+  PairPool(request: QueryGetPairPoolRequest): Promise<QueryGetPairPoolResponse> {
+    const data = QueryGetPairPoolRequest.encode(request).finish();
+    const promise = this.rpc.request("linnefromice.lending.lending.Query", "PairPool", data);
+    return promise.then((data) => QueryGetPairPoolResponse.decode(new _m0.Reader(data)));
+  }
+
+  PairPoolAll(request: QueryAllPairPoolRequest): Promise<QueryAllPairPoolResponse> {
+    const data = QueryAllPairPoolRequest.encode(request).finish();
+    const promise = this.rpc.request("linnefromice.lending.lending.Query", "PairPoolAll", data);
+    return promise.then((data) => QueryAllPairPoolResponse.decode(new _m0.Reader(data)));
+  }
 }
 
 interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -135,6 +403,18 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

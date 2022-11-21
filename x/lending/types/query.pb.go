@@ -6,7 +6,7 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	_ "github.com/cosmos/cosmos-sdk/types/query"
+	query "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
@@ -113,35 +113,234 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
+type QueryGetPairPoolRequest struct {
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (m *QueryGetPairPoolRequest) Reset()         { *m = QueryGetPairPoolRequest{} }
+func (m *QueryGetPairPoolRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPairPoolRequest) ProtoMessage()    {}
+func (*QueryGetPairPoolRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_92fbbd5ae4c85932, []int{2}
+}
+func (m *QueryGetPairPoolRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetPairPoolRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetPairPoolRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetPairPoolRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPairPoolRequest.Merge(m, src)
+}
+func (m *QueryGetPairPoolRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetPairPoolRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPairPoolRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetPairPoolRequest proto.InternalMessageInfo
+
+func (m *QueryGetPairPoolRequest) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type QueryGetPairPoolResponse struct {
+	PairPool PairPool `protobuf:"bytes,1,opt,name=PairPool,proto3" json:"PairPool"`
+}
+
+func (m *QueryGetPairPoolResponse) Reset()         { *m = QueryGetPairPoolResponse{} }
+func (m *QueryGetPairPoolResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPairPoolResponse) ProtoMessage()    {}
+func (*QueryGetPairPoolResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_92fbbd5ae4c85932, []int{3}
+}
+func (m *QueryGetPairPoolResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetPairPoolResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetPairPoolResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetPairPoolResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPairPoolResponse.Merge(m, src)
+}
+func (m *QueryGetPairPoolResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetPairPoolResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPairPoolResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetPairPoolResponse proto.InternalMessageInfo
+
+func (m *QueryGetPairPoolResponse) GetPairPool() PairPool {
+	if m != nil {
+		return m.PairPool
+	}
+	return PairPool{}
+}
+
+type QueryAllPairPoolRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllPairPoolRequest) Reset()         { *m = QueryAllPairPoolRequest{} }
+func (m *QueryAllPairPoolRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllPairPoolRequest) ProtoMessage()    {}
+func (*QueryAllPairPoolRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_92fbbd5ae4c85932, []int{4}
+}
+func (m *QueryAllPairPoolRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllPairPoolRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllPairPoolRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllPairPoolRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllPairPoolRequest.Merge(m, src)
+}
+func (m *QueryAllPairPoolRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllPairPoolRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllPairPoolRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllPairPoolRequest proto.InternalMessageInfo
+
+func (m *QueryAllPairPoolRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllPairPoolResponse struct {
+	PairPool   []PairPool          `protobuf:"bytes,1,rep,name=PairPool,proto3" json:"PairPool"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllPairPoolResponse) Reset()         { *m = QueryAllPairPoolResponse{} }
+func (m *QueryAllPairPoolResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllPairPoolResponse) ProtoMessage()    {}
+func (*QueryAllPairPoolResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_92fbbd5ae4c85932, []int{5}
+}
+func (m *QueryAllPairPoolResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllPairPoolResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllPairPoolResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllPairPoolResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllPairPoolResponse.Merge(m, src)
+}
+func (m *QueryAllPairPoolResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllPairPoolResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllPairPoolResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllPairPoolResponse proto.InternalMessageInfo
+
+func (m *QueryAllPairPoolResponse) GetPairPool() []PairPool {
+	if m != nil {
+		return m.PairPool
+	}
+	return nil
+}
+
+func (m *QueryAllPairPoolResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "linnefromice.lending.lending.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "linnefromice.lending.lending.QueryParamsResponse")
+	proto.RegisterType((*QueryGetPairPoolRequest)(nil), "linnefromice.lending.lending.QueryGetPairPoolRequest")
+	proto.RegisterType((*QueryGetPairPoolResponse)(nil), "linnefromice.lending.lending.QueryGetPairPoolResponse")
+	proto.RegisterType((*QueryAllPairPoolRequest)(nil), "linnefromice.lending.lending.QueryAllPairPoolRequest")
+	proto.RegisterType((*QueryAllPairPoolResponse)(nil), "linnefromice.lending.lending.QueryAllPairPoolResponse")
 }
 
 func init() { proto.RegisterFile("lending/lending/query.proto", fileDescriptor_92fbbd5ae4c85932) }
 
 var fileDescriptor_92fbbd5ae4c85932 = []byte{
-	// 315 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0xce, 0x49, 0xcd, 0x4b,
-	0xc9, 0xcc, 0x4b, 0xd7, 0x87, 0xd1, 0x85, 0xa5, 0xa9, 0x45, 0x95, 0x7a, 0x05, 0x45, 0xf9, 0x25,
-	0xf9, 0x42, 0x32, 0x39, 0x99, 0x79, 0x79, 0xa9, 0x69, 0x45, 0xf9, 0xb9, 0x99, 0xc9, 0xa9, 0x7a,
-	0x50, 0x15, 0x30, 0x5a, 0x4a, 0x24, 0x3d, 0x3f, 0x3d, 0x1f, 0xac, 0x50, 0x1f, 0xc4, 0x82, 0xe8,
-	0x91, 0x92, 0x49, 0xcf, 0xcf, 0x4f, 0xcf, 0x49, 0xd5, 0x4f, 0x2c, 0xc8, 0xd4, 0x4f, 0xcc, 0xcb,
-	0xcb, 0x2f, 0x49, 0x2c, 0xc9, 0xcc, 0xcf, 0x2b, 0x86, 0xca, 0x6a, 0x25, 0xe7, 0x17, 0xe7, 0xe6,
-	0x17, 0xeb, 0x27, 0x25, 0x16, 0xa7, 0x42, 0xac, 0xd2, 0x2f, 0x33, 0x4c, 0x4a, 0x2d, 0x49, 0x34,
-	0xd4, 0x2f, 0x48, 0x4c, 0xcf, 0xcc, 0x03, 0x2b, 0x86, 0x99, 0x84, 0xee, 0xb4, 0x82, 0xc4, 0xa2,
-	0xc4, 0x5c, 0xa8, 0x49, 0x4a, 0x22, 0x5c, 0x42, 0x81, 0x20, 0xfd, 0x01, 0x60, 0xc1, 0xa0, 0xd4,
-	0xc2, 0xd2, 0xd4, 0xe2, 0x12, 0xa5, 0x48, 0x2e, 0x61, 0x14, 0xd1, 0xe2, 0x82, 0xfc, 0xbc, 0xe2,
-	0x54, 0x21, 0x27, 0x2e, 0x36, 0x88, 0x66, 0x09, 0x46, 0x05, 0x46, 0x0d, 0x6e, 0x23, 0x15, 0x3d,
-	0x7c, 0x3e, 0xd3, 0x83, 0xe8, 0x76, 0x62, 0x39, 0x71, 0x4f, 0x9e, 0x21, 0x08, 0xaa, 0xd3, 0x68,
-	0x29, 0x23, 0x17, 0x2b, 0xd8, 0x6c, 0xa1, 0xd9, 0x8c, 0x5c, 0x6c, 0x10, 0x25, 0x42, 0x06, 0xf8,
-	0x0d, 0xc2, 0x74, 0xa1, 0x94, 0x21, 0x09, 0x3a, 0x20, 0xae, 0x57, 0xd2, 0x69, 0xba, 0xfc, 0x64,
-	0x32, 0x93, 0x9a, 0x90, 0x8a, 0x3e, 0xb2, 0x56, 0x7d, 0xec, 0xc1, 0xe3, 0x14, 0x75, 0xe2, 0x91,
-	0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1,
-	0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x51, 0x0e, 0xe9, 0x99, 0x25, 0x19, 0xa5, 0x49, 0x7a,
-	0xc9, 0xf9, 0xb9, 0xa8, 0x26, 0x81, 0x43, 0xb4, 0xa4, 0xb2, 0x20, 0x55, 0x17, 0x12, 0x3d, 0xba,
-	0x30, 0x23, 0x2b, 0xe0, 0x86, 0x83, 0x64, 0x8b, 0x93, 0xd8, 0xc0, 0x2a, 0x8d, 0x01, 0x01, 0x00,
-	0x00, 0xff, 0xff, 0xfb, 0x65, 0xf3, 0x6e, 0x36, 0x02, 0x00, 0x00,
+	// 496 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xbf, 0x6f, 0x13, 0x31,
+	0x14, 0xc7, 0xe3, 0x10, 0x22, 0xe4, 0x4a, 0x0c, 0xa6, 0x12, 0x55, 0xa8, 0xae, 0xe8, 0x54, 0xb5,
+	0x14, 0x55, 0x36, 0x29, 0x3f, 0xf6, 0x66, 0xa0, 0xb0, 0x85, 0x6c, 0xb0, 0x20, 0x27, 0x67, 0x0e,
+	0x4b, 0x8e, 0xdf, 0xf5, 0xec, 0x20, 0x2a, 0xc4, 0xc2, 0xc2, 0x8a, 0xc4, 0xc8, 0xdf, 0x50, 0xf1,
+	0x6f, 0x74, 0xac, 0xc4, 0xc2, 0x84, 0x50, 0xc2, 0x1f, 0x82, 0x62, 0xfb, 0xd2, 0xa4, 0x17, 0x35,
+	0x49, 0x27, 0x5b, 0xf6, 0xfb, 0x7e, 0xdf, 0xe7, 0xf9, 0xbd, 0x3b, 0x7c, 0x4f, 0x09, 0x9d, 0x48,
+	0x9d, 0xb2, 0x62, 0x3d, 0x1e, 0x88, 0xfc, 0x84, 0x66, 0x39, 0x58, 0x20, 0x9b, 0x4a, 0x6a, 0x2d,
+	0xde, 0xe5, 0xd0, 0x97, 0x3d, 0x41, 0x43, 0x44, 0xb1, 0x36, 0xd6, 0x53, 0x48, 0xc1, 0x05, 0xb2,
+	0xf1, 0xce, 0x6b, 0x1a, 0x9b, 0x29, 0x40, 0xaa, 0x04, 0xe3, 0x99, 0x64, 0x5c, 0x6b, 0xb0, 0xdc,
+	0x4a, 0xd0, 0x26, 0xdc, 0x3e, 0xec, 0x81, 0xe9, 0x83, 0x61, 0x5d, 0x6e, 0x84, 0x4f, 0xc5, 0x3e,
+	0x34, 0xbb, 0xc2, 0xf2, 0x26, 0xcb, 0x78, 0x2a, 0xb5, 0x0b, 0x2e, 0x9c, 0x2e, 0xa3, 0x65, 0x3c,
+	0xe7, 0xfd, 0xc2, 0x69, 0xab, 0x7c, 0x2b, 0xf3, 0xb7, 0x19, 0x80, 0xf2, 0x01, 0xf1, 0x3a, 0x26,
+	0xaf, 0xc6, 0x09, 0xda, 0x4e, 0xd5, 0x11, 0xc7, 0x03, 0x61, 0x6c, 0xfc, 0x1a, 0xdf, 0x99, 0x39,
+	0x35, 0x19, 0x68, 0x23, 0x48, 0x0b, 0xd7, 0xbd, 0xfb, 0x06, 0xba, 0x8f, 0x1e, 0xac, 0x1d, 0x6c,
+	0xd3, 0xab, 0x4a, 0xa7, 0x5e, 0xdd, 0xaa, 0x9d, 0xfd, 0xd9, 0xaa, 0x74, 0x82, 0x32, 0xde, 0xc3,
+	0x77, 0x9d, 0xf5, 0x91, 0xb0, 0x6d, 0x2e, 0xf3, 0x36, 0x80, 0x0a, 0x59, 0xc9, 0x6d, 0x5c, 0x95,
+	0x89, 0xb3, 0xae, 0x75, 0xaa, 0x32, 0x89, 0x13, 0xbc, 0x51, 0x0e, 0x0d, 0x28, 0x2f, 0xf0, 0xad,
+	0xe2, 0x2c, 0xc0, 0xec, 0x2c, 0x82, 0xf1, 0xd1, 0x01, 0x67, 0xa2, 0x8e, 0x79, 0x00, 0x3a, 0x54,
+	0xea, 0x32, 0xd0, 0x73, 0x8c, 0x2f, 0xde, 0x7b, 0x92, 0xc6, 0x37, 0x87, 0x8e, 0x9b, 0x43, 0xfd,
+	0x1c, 0x84, 0xe6, 0xd0, 0x36, 0x4f, 0x45, 0xd0, 0x76, 0xa6, 0x94, 0xf1, 0x29, 0x0a, 0x95, 0xcc,
+	0xe4, 0x98, 0x5b, 0xc9, 0x8d, 0xeb, 0x57, 0x42, 0x8e, 0x66, 0x70, 0xab, 0x0e, 0x77, 0x77, 0x21,
+	0xae, 0xc7, 0x98, 0xe6, 0x3d, 0xf8, 0x5a, 0xc3, 0x37, 0x1d, 0x2f, 0xf9, 0x81, 0x70, 0xdd, 0xb7,
+	0x91, 0x3c, 0xba, 0x9a, 0xaa, 0x3c, 0x45, 0x8d, 0xe6, 0x0a, 0x0a, 0x4f, 0x11, 0xef, 0x7f, 0xf9,
+	0xf5, 0xef, 0x7b, 0x75, 0x87, 0x6c, 0xb3, 0x69, 0x29, 0x9b, 0x3f, 0xe3, 0xe4, 0x27, 0xba, 0x78,
+	0x3b, 0xf2, 0x74, 0x89, 0x6c, 0xe5, 0xa1, 0x6b, 0x3c, 0x5b, 0x55, 0x16, 0x48, 0x9f, 0x38, 0x52,
+	0x4a, 0xf6, 0x17, 0x91, 0x86, 0xef, 0x8d, 0x7d, 0x92, 0xc9, 0x67, 0x72, 0x8a, 0xf0, 0x5a, 0x61,
+	0x75, 0xa8, 0x96, 0x83, 0x2e, 0x0f, 0xe6, 0x52, 0xd0, 0x73, 0x66, 0x2d, 0x66, 0x0e, 0x7a, 0x8f,
+	0xec, 0x2e, 0x09, 0xdd, 0x7a, 0x79, 0x36, 0x8c, 0xd0, 0xf9, 0x30, 0x42, 0x7f, 0x87, 0x11, 0xfa,
+	0x36, 0x8a, 0x2a, 0xe7, 0xa3, 0xa8, 0xf2, 0x7b, 0x14, 0x55, 0xde, 0xb0, 0x54, 0xda, 0xf7, 0x83,
+	0x2e, 0xed, 0x41, 0x7f, 0xbe, 0xd9, 0xc7, 0xc9, 0xce, 0x9e, 0x64, 0xc2, 0x74, 0xeb, 0xee, 0x87,
+	0xf3, 0xf8, 0x7f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x53, 0xa5, 0x3e, 0x69, 0x4c, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -158,6 +357,10 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	// Queries a PairPool by id.
+	PairPool(ctx context.Context, in *QueryGetPairPoolRequest, opts ...grpc.CallOption) (*QueryGetPairPoolResponse, error)
+	// Queries a list of PairPool items.
+	PairPoolAll(ctx context.Context, in *QueryAllPairPoolRequest, opts ...grpc.CallOption) (*QueryAllPairPoolResponse, error)
 }
 
 type queryClient struct {
@@ -177,10 +380,32 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
+func (c *queryClient) PairPool(ctx context.Context, in *QueryGetPairPoolRequest, opts ...grpc.CallOption) (*QueryGetPairPoolResponse, error) {
+	out := new(QueryGetPairPoolResponse)
+	err := c.cc.Invoke(ctx, "/linnefromice.lending.lending.Query/PairPool", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) PairPoolAll(ctx context.Context, in *QueryAllPairPoolRequest, opts ...grpc.CallOption) (*QueryAllPairPoolResponse, error) {
+	out := new(QueryAllPairPoolResponse)
+	err := c.cc.Invoke(ctx, "/linnefromice.lending.lending.Query/PairPoolAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	// Queries a PairPool by id.
+	PairPool(context.Context, *QueryGetPairPoolRequest) (*QueryGetPairPoolResponse, error)
+	// Queries a list of PairPool items.
+	PairPoolAll(context.Context, *QueryAllPairPoolRequest) (*QueryAllPairPoolResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -189,6 +414,12 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
+func (*UnimplementedQueryServer) PairPool(ctx context.Context, req *QueryGetPairPoolRequest) (*QueryGetPairPoolResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PairPool not implemented")
+}
+func (*UnimplementedQueryServer) PairPoolAll(ctx context.Context, req *QueryAllPairPoolRequest) (*QueryAllPairPoolResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PairPoolAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -213,6 +444,42 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_PairPool_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetPairPoolRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).PairPool(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/linnefromice.lending.lending.Query/PairPool",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).PairPool(ctx, req.(*QueryGetPairPoolRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_PairPoolAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllPairPoolRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).PairPoolAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/linnefromice.lending.lending.Query/PairPoolAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).PairPoolAll(ctx, req.(*QueryAllPairPoolRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "linnefromice.lending.lending.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -220,6 +487,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
+		},
+		{
+			MethodName: "PairPool",
+			Handler:    _Query_PairPool_Handler,
+		},
+		{
+			MethodName: "PairPoolAll",
+			Handler:    _Query_PairPoolAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -282,6 +557,151 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetPairPoolRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetPairPoolRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetPairPoolRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Id != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetPairPoolResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetPairPoolResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetPairPoolResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.PairPool.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllPairPoolRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllPairPoolRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllPairPoolRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllPairPoolResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllPairPoolResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllPairPoolResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.PairPool) > 0 {
+		for iNdEx := len(m.PairPool) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.PairPool[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -310,6 +730,61 @@ func (m *QueryParamsResponse) Size() (n int) {
 	_ = l
 	l = m.Params.Size()
 	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetPairPoolRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Id != 0 {
+		n += 1 + sovQuery(uint64(m.Id))
+	}
+	return n
+}
+
+func (m *QueryGetPairPoolResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.PairPool.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllPairPoolRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllPairPoolResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.PairPool) > 0 {
+		for _, e := range m.PairPool {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
 	return n
 }
 
@@ -428,6 +903,364 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.Params.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetPairPoolRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetPairPoolRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetPairPoolRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetPairPoolResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetPairPoolResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetPairPoolResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PairPool", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.PairPool.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllPairPoolRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllPairPoolRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllPairPoolRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllPairPoolResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllPairPoolResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllPairPoolResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PairPool", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PairPool = append(m.PairPool, PairPool{})
+			if err := m.PairPool[len(m.PairPool)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
