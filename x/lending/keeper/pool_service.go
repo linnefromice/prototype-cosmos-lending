@@ -26,21 +26,25 @@ func (k Keeper) createModuleAccount(ctx sdk.Context, addr sdk.AccAddress) error 
 }
 
 func (k Keeper) AddPool(ctx sdk.Context, msg *types.MsgAddPool) (types.PairPool, error) {
-	// creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	poolId := k.GetPairPoolCount(ctx) + 1
 
 	// validations
 
-	// convert
+	// execute
 	poolAccAddress := newPairPoolAddress(poolId)
 	k.createModuleAccount(ctx, poolAccAddress)
+
+	if err := k.bankKeeper.SendCoins(ctx, creator, poolAccAddress, sdk.NewCoins(msg.Amount)); err != nil {
+		return types.PairPool{}, err
+	}
 
 	pool := types.PairPool{
 		Address:                    poolAccAddress.String(),
 		PoolId:                     poolId,
-		AssetLiquidity:             msg.Amount, // TODO: collect
+		AssetLiquidity:             msg.Amount,
 		AssetLpCoinDenom:           msg.Amount.GetDenom(),
-		AssetTotalNormalDeposited:  0, // TODO: collect
+		AssetTotalNormalDeposited:  msg.Amount.Amount.Uint64(),
 		AssetTotalConlyDeposited:   0,
 		AssetTotalBorrowed:         0,
 		ShadowLiquidity:            msg.Amount,            // TODO: use shadow
