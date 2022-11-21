@@ -74014,6 +74014,12 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  linnefromice.lending.lending.MsgAddPoolResponse:
+    type: object
+    properties:
+      poolId:
+        type: string
+        format: uint64
   linnefromice.lending.lending.PairPool:
     type: object
     properties:

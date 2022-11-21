@@ -9,6 +9,11 @@
  * ---------------------------------------------------------------
  */
 
+export interface LendingMsgAddPoolResponse {
+  /** @format uint64 */
+  poolId?: string;
+}
+
 export interface LendingPairPool {
   /** @format uint64 */
   id?: string;
