@@ -12,7 +12,11 @@ Language / Tools
 ```bash
 ignite chain serve
 ignite chain build --output dist
-./dist/prototype-cosmos-lendingd ...
+./dist/lendingd ...
+```
+or
+```bash
+$(go env GOPATH)/bin/lendingd ...
 ```
 
 ---
