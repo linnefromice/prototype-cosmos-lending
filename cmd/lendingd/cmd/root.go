@@ -37,8 +37,8 @@ import (
 
 	// this line is used by starport scaffolding # root/moduleImport
 
-	"github.com/linnefromice/prototype-cosmos-lending/app"
-	appparams "github.com/linnefromice/prototype-cosmos-lending/app/params"
+	"github.com/linnefromice/lending/app"
+	appparams "github.com/linnefromice/lending/app/params"
 )
 
 // NewRootCmd creates a new root command for a Cosmos SDK application

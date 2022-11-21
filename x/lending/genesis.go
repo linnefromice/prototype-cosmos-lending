@@ -2,8 +2,8 @@ package lending
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/linnefromice/prototype-cosmos-lending/x/lending/keeper"
-	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
+	"github.com/linnefromice/lending/x/lending/keeper"
+	"github.com/linnefromice/lending/x/lending/types"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.

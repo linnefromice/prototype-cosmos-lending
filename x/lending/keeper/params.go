@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
+	"github.com/linnefromice/lending/x/lending/types"
 )
 
 // GetParams get all parameters as types.Params

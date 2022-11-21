@@ -104,14 +104,14 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
-	lendingmodule "github.com/linnefromice/prototype-cosmos-lending/x/lending"
-	lendingmodulekeeper "github.com/linnefromice/prototype-cosmos-lending/x/lending/keeper"
-	lendingmoduletypes "github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
+	lendingmodule "github.com/linnefromice/lending/x/lending"
+	lendingmodulekeeper "github.com/linnefromice/lending/x/lending/keeper"
+	lendingmoduletypes "github.com/linnefromice/lending/x/lending/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	appparams "github.com/linnefromice/prototype-cosmos-lending/app/params"
-	"github.com/linnefromice/prototype-cosmos-lending/docs"
+	appparams "github.com/linnefromice/lending/app/params"
+	"github.com/linnefromice/lending/docs"
 )
 
 const (

@@ -17,9 +17,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/linnefromice/prototype-cosmos-lending/x/lending/client/cli"
-	"github.com/linnefromice/prototype-cosmos-lending/x/lending/keeper"
-	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
+	"github.com/linnefromice/lending/x/lending/client/cli"
+	"github.com/linnefromice/lending/x/lending/keeper"
+	"github.com/linnefromice/lending/x/lending/types"
 )
 
 var (

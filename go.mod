@@ -1,4 +1,4 @@
-module github.com/linnefromice/prototype-cosmos-lending
+module github.com/linnefromice/lending
 
 go 1.18
 
