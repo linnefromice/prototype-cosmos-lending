@@ -10,8 +10,12 @@ import (
 func (k msgServer) AddPool(goCtx context.Context, msg *types.MsgAddPool) (*types.MsgAddPoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	pool, err := k.Keeper.AddPool(ctx, msg)
+	if err != nil {
+		panic(err)
+	}
 
-	return &types.MsgAddPoolResponse{}, nil
+	return &types.MsgAddPoolResponse{
+		PoolId: pool.PoolId,
+	}, nil
 }
