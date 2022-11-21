@@ -10,15 +10,13 @@ message PairPool {
   string address = 2; 
   uint64 poolId = 3; 
   cosmos.base.v1beta1.Coin assetLiquidity = 4 [(gogoproto.nullable) = false]; 
-  string assetLpCoinDenom = 5; 
-  uint64 assetTotalNormalDeposited = 6; 
-  uint64 assetTotalConlyDeposited = 7; 
-  uint64 assetTotalBorrowed = 8; 
-  cosmos.base.v1beta1.Coin shadowLiquidity = 9 [(gogoproto.nullable) = false]; 
-  string shadowLpCoinDenom = 10; 
-  uint64 shadowTotalNormalDeposited = 11; 
-  uint64 shadowTotalConlyDeposited = 12; 
-  uint64 shadowTotalBorrowed = 13; 
-  uint64 lastUpdated = 14; 
+  uint64 assetTotalNormalDeposited = 5; 
+  uint64 assetTotalConlyDeposited = 6; 
+  uint64 assetTotalBorrowed = 7; 
+  cosmos.base.v1beta1.Coin shadowLiquidity = 8 [(gogoproto.nullable) = false]; 
+  uint64 shadowTotalNormalDeposited = 9; 
+  uint64 shadowTotalConlyDeposited = 10; 
+  uint64 shadowTotalBorrowed = 11; 
+  uint64 lastUpdated = 12; 
   
 }

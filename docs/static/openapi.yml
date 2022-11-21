@@ -44346,8 +44346,6 @@ paths:
                         custom method
 
                         signatures required by gogoproto.
-                    assetLpCoinDenom:
-                      type: string
                     assetTotalNormalDeposited:
                       type: string
                       format: uint64
@@ -44372,8 +44370,6 @@ paths:
                         custom method
 
                         signatures required by gogoproto.
-                    shadowLpCoinDenom:
-                      type: string
                     shadowTotalNormalDeposited:
                       type: string
                       format: uint64
@@ -44527,8 +44523,6 @@ paths:
                       custom method
 
                       signatures required by gogoproto.
-                  assetLpCoinDenom:
-                    type: string
                   assetTotalNormalDeposited:
                     type: string
                     format: uint64
@@ -44553,8 +44547,6 @@ paths:
                       custom method
 
                       signatures required by gogoproto.
-                  shadowLpCoinDenom:
-                    type: string
                   shadowTotalNormalDeposited:
                     type: string
                     format: uint64
@@ -74043,8 +74035,6 @@ definitions:
 
           NOTE: The amount field is an Int which implements the custom method
           signatures required by gogoproto.
-      assetLpCoinDenom:
-        type: string
       assetTotalNormalDeposited:
         type: string
         format: uint64
@@ -74066,8 +74056,6 @@ definitions:
 
           NOTE: The amount field is an Int which implements the custom method
           signatures required by gogoproto.
-      shadowLpCoinDenom:
-        type: string
       shadowTotalNormalDeposited:
         type: string
         format: uint64
@@ -74114,8 +74102,6 @@ definitions:
                 method
 
                 signatures required by gogoproto.
-            assetLpCoinDenom:
-              type: string
             assetTotalNormalDeposited:
               type: string
               format: uint64
@@ -74140,8 +74126,6 @@ definitions:
                 method
 
                 signatures required by gogoproto.
-            shadowLpCoinDenom:
-              type: string
             shadowTotalNormalDeposited:
               type: string
               format: uint64
@@ -74209,8 +74193,6 @@ definitions:
               method
 
               signatures required by gogoproto.
-          assetLpCoinDenom:
-            type: string
           assetTotalNormalDeposited:
             type: string
             format: uint64
@@ -74235,8 +74217,6 @@ definitions:
               method
 
               signatures required by gogoproto.
-          shadowLpCoinDenom:
-            type: string
           shadowTotalNormalDeposited:
             type: string
             format: uint64
