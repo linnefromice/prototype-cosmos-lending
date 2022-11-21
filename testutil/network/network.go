@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/linnefromice/lending/app"
+	"github.com/linnefromice/prototype-cosmos-lending/app"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"

@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/linnefromice/lending/x/lending/types"
+	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
 	"github.com/stretchr/testify/require"
 )
 

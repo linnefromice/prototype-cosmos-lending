@@ -3,8 +3,8 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "github.com/linnefromice/lending/testutil/keeper"
-	"github.com/linnefromice/lending/x/lending/types"
+	testkeeper "github.com/linnefromice/prototype-cosmos-lending/testutil/keeper"
+	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
 	"github.com/stretchr/testify/require"
 )
 

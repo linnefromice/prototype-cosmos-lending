@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/linnefromice/lending/x/lending/types"
+	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
 )
 
 type msgServer struct {

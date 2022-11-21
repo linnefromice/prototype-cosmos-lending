@@ -9,9 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"github.com/linnefromice/lending/testutil/sample"
-	lendingsimulation "github.com/linnefromice/lending/x/lending/simulation"
-	"github.com/linnefromice/lending/x/lending/types"
+	"github.com/linnefromice/prototype-cosmos-lending/testutil/sample"
+	lendingsimulation "github.com/linnefromice/prototype-cosmos-lending/x/lending/simulation"
+	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
 )
 
 // avoid unused import issue

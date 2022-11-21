@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 
-	"github.com/linnefromice/lending/app"
-	"github.com/linnefromice/lending/cmd/lendingd/cmd"
+	"github.com/linnefromice/prototype-cosmos-lending/app"
+	"github.com/linnefromice/prototype-cosmos-lending/cmd/lendingd/cmd"
 )
 
 func main() {

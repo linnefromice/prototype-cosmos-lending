@@ -3,10 +3,10 @@ package lending_test
 import (
 	"testing"
 
-	keepertest "github.com/linnefromice/lending/testutil/keeper"
-	"github.com/linnefromice/lending/testutil/nullify"
-	"github.com/linnefromice/lending/x/lending"
-	"github.com/linnefromice/lending/x/lending/types"
+	keepertest "github.com/linnefromice/prototype-cosmos-lending/testutil/keeper"
+	"github.com/linnefromice/prototype-cosmos-lending/testutil/nullify"
+	"github.com/linnefromice/prototype-cosmos-lending/x/lending"
+	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
 	"github.com/stretchr/testify/require"
 )
 
