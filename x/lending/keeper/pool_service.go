@@ -35,24 +35,26 @@ func (k Keeper) AddPool(ctx sdk.Context, msg *types.MsgAddPool) (types.PairPool,
 	poolAccAddress := newPairPoolAddress(poolId)
 	k.createModuleAccount(ctx, poolAccAddress)
 
-	if err := k.bankKeeper.SendCoins(ctx, creator, poolAccAddress, sdk.NewCoins(msg.Amount)); err != nil {
-		return types.PairPool{}, err
-	}
-
 	pool := types.PairPool{
 		Address:                    poolAccAddress.String(),
 		PoolId:                     poolId,
 		AssetLiquidity:             msg.Amount,
-		AssetLpCoinDenom:           msg.Amount.GetDenom(),
+		AssetLpCoinDenom:           types.GetPairPoolAssetLpCoinDenom(msg.Amount.Denom),
 		AssetTotalNormalDeposited:  msg.Amount.Amount.Uint64(),
 		AssetTotalConlyDeposited:   0,
 		AssetTotalBorrowed:         0,
 		ShadowLiquidity:            NewUsdz(0),
-		ShadowLpCoinDenom:          UsdzDenom,
+		ShadowLpCoinDenom:          types.GetPairPoolShadowLpCoinDenom(msg.Amount.Denom, UsdzDenom),
 		ShadowTotalNormalDeposited: 0,
 		ShadowTotalConlyDeposited:  0,
 		ShadowTotalBorrowed:        0,
 		LastUpdated:                0, // TODO: current timestamp
+	}
+
+	if msg.Amount.IsPositive() {
+		if err := k.bankKeeper.SendCoins(ctx, creator, poolAccAddress, sdk.NewCoins(msg.Amount)); err != nil {
+			return types.PairPool{}, err
+		}
 	}
 
 	k.AppendPairPool(ctx, pool)
