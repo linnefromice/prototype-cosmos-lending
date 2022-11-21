@@ -9,9 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"github.com/linnefromice/prototype-cosmos-lending/testutil/sample"
-	lendingsimulation "github.com/linnefromice/prototype-cosmos-lending/x/lending/simulation"
-	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
+	"github.com/linnefromice/lending/testutil/sample"
+	lendingsimulation "github.com/linnefromice/lending/x/lending/simulation"
+	"github.com/linnefromice/lending/x/lending/types"
 )
 
 // avoid unused import issue
@@ -24,7 +24,11 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgAddPool = "op_weight_msg_add_pool"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAddPool int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module
@@ -57,6 +61,17 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
+
+	var weightMsgAddPool int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddPool, &weightMsgAddPool, nil,
+		func(_ *rand.Rand) {
+			weightMsgAddPool = defaultWeightMsgAddPool
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAddPool,
+		lendingsimulation.SimulateMsgAddPool(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
 

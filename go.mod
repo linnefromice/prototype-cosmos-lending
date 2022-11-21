@@ -1,4 +1,4 @@
-module github.com/linnefromice/prototype-cosmos-lending
+module github.com/linnefromice/lending
 
 go 1.18
 
@@ -9,6 +9,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/ignite/cli v0.25.1
+	github.com/linnefromice/prototype-cosmos-lending v0.0.0-20221121013206-11c7d228c405
 	github.com/spf13/cast v1.5.0
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/pflag v1.0.5

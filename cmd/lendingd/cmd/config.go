@@ -3,7 +3,7 @@ package cmd
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/linnefromice/prototype-cosmos-lending/app"
+	"github.com/linnefromice/lending/app"
 )
 
 func initSDKConfig() {

@@ -2,12 +2,25 @@ syntax = "proto3";
 package linnefromice.lending.lending;
 
 // this line is used by starport scaffolding # proto/tx/import
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 
-option go_package = "github.com/linnefromice/prototype-cosmos-lending/x/lending/types";
+option go_package = "github.com/linnefromice/lending/x/lending/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc AddPool(MsgAddPool) returns (MsgAddPoolResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgAddPool {
+  string creator = 1;
+  cosmos.base.v1beta1.Coin amount = 2 [(gogoproto.nullable) = false];
+  bool active = 3;
+}
+
+message MsgAddPoolResponse {
+  uint64 poolId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

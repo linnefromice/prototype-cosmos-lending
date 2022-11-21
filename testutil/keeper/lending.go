@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -9,8 +10,9 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/linnefromice/prototype-cosmos-lending/x/lending/keeper"
-	"github.com/linnefromice/prototype-cosmos-lending/x/lending/types"
+	"github.com/linnefromice/lending/x/lending"
+	"github.com/linnefromice/lending/x/lending/keeper"
+	"github.com/linnefromice/lending/x/lending/types"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
@@ -41,6 +43,8 @@ func LendingKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
+		nil,
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
@@ -49,4 +53,10 @@ func LendingKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	k.SetParams(ctx, types.DefaultParams())
 
 	return k, ctx
+}
+
+func SetupMsgServerForPool(t *testing.T) (types.MsgServer, keeper.Keeper, context.Context) {
+	k, ctx := LendingKeeper(t)
+	lending.InitGenesis(ctx, *k, *types.DefaultGenesis())
+	return keeper.NewMsgServerImpl(*k), *k, sdk.WrapSDKContext(ctx)
 }

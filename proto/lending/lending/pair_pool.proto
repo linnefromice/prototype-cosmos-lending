@@ -1,0 +1,22 @@
+syntax = "proto3";
+package linnefromice.lending.lending;
+
+option go_package = "github.com/linnefromice/lending/x/lending/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message PairPool {
+  uint64 id = 1;
+  string address = 2; 
+  uint64 poolId = 3; 
+  cosmos.base.v1beta1.Coin assetLiquidity = 4 [(gogoproto.nullable) = false]; 
+  uint64 assetTotalNormalDeposited = 5; 
+  uint64 assetTotalConlyDeposited = 6; 
+  uint64 assetTotalBorrowed = 7; 
+  cosmos.base.v1beta1.Coin shadowLiquidity = 8 [(gogoproto.nullable) = false]; 
+  uint64 shadowTotalNormalDeposited = 9; 
+  uint64 shadowTotalConlyDeposited = 10; 
+  uint64 shadowTotalBorrowed = 11; 
+  uint64 lastUpdated = 12; 
+  
+}

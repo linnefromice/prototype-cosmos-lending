@@ -3,7 +3,7 @@ package linnefromice.lending.lending;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/linnefromice/prototype-cosmos-lending/x/lending/types";
+option go_package = "github.com/linnefromice/lending/x/lending/types";
 
 // Params defines the parameters for the module.
 message Params {

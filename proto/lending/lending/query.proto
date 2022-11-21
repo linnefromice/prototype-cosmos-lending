@@ -5,9 +5,10 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "lending/lending/params.proto";
+import "lending/lending/pair_pool.proto";
 // this line is used by starport scaffolding # 1
 
-option go_package = "github.com/linnefromice/prototype-cosmos-lending/x/lending/types";
+option go_package = "github.com/linnefromice/lending/x/lending/types";
 
 // Query defines the gRPC querier service.
 service Query {
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/linnefromice/lending/lending/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a PairPool by id.
+	rpc PairPool(QueryGetPairPoolRequest) returns (QueryGetPairPoolResponse) {
+		option (google.api.http).get = "/linnefromice/lending/lending/pair_pool/{id}";
+	}
+
+	// Queries a list of PairPool items.
+	rpc PairPoolAll(QueryAllPairPoolRequest) returns (QueryAllPairPoolResponse) {
+		option (google.api.http).get = "/linnefromice/lending/lending/pair_pool";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,23 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetPairPoolRequest {
+	uint64 id = 1;
+}
+
+message QueryGetPairPoolResponse {
+	PairPool PairPool = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllPairPoolRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllPairPoolResponse {
+	repeated PairPool PairPool = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
