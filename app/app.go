@@ -508,6 +508,8 @@ func New(
 		keys[lendingmoduletypes.StoreKey],
 		keys[lendingmoduletypes.MemStoreKey],
 		app.GetSubspace(lendingmoduletypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
 	)
 	lendingModule := lendingmodule.NewAppModule(appCodec, app.LendingKeeper, app.AccountKeeper, app.BankKeeper)
 
