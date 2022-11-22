@@ -10,8 +10,10 @@ import (
 func (k msgServer) Borrow(goCtx context.Context, msg *types.MsgBorrow) (*types.MsgBorrowResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	err := k.Keeper.BorrowFromPairPool(ctx, msg)
+	if err != nil {
+		panic(err)
+	}
 
 	return &types.MsgBorrowResponse{}, nil
 }
