@@ -7,12 +7,18 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgCreatePermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/tx";
 import { MsgCreateVestingAccount } from "./types/cosmos/vesting/v1beta1/tx";
 import { MsgCreatePeriodicVestingAccount } from "./types/cosmos/vesting/v1beta1/tx";
-import { MsgCreatePermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/tx";
 
 
-export { MsgCreateVestingAccount, MsgCreatePeriodicVestingAccount, MsgCreatePermanentLockedAccount };
+export { MsgCreatePermanentLockedAccount, MsgCreateVestingAccount, MsgCreatePeriodicVestingAccount };
+
+type sendMsgCreatePermanentLockedAccountParams = {
+  value: MsgCreatePermanentLockedAccount,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendMsgCreateVestingAccountParams = {
   value: MsgCreateVestingAccount,
@@ -26,12 +32,10 @@ type sendMsgCreatePeriodicVestingAccountParams = {
   memo?: string
 };
 
-type sendMsgCreatePermanentLockedAccountParams = {
-  value: MsgCreatePermanentLockedAccount,
-  fee?: StdFee,
-  memo?: string
-};
 
+type msgCreatePermanentLockedAccountParams = {
+  value: MsgCreatePermanentLockedAccount,
+};
 
 type msgCreateVestingAccountParams = {
   value: MsgCreateVestingAccount,
@@ -39,10 +43,6 @@ type msgCreateVestingAccountParams = {
 
 type msgCreatePeriodicVestingAccountParams = {
   value: MsgCreatePeriodicVestingAccount,
-};
-
-type msgCreatePermanentLockedAccountParams = {
-  value: MsgCreatePermanentLockedAccount,
 };
 
 
@@ -62,6 +62,20 @@ interface TxClientOptions {
 export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
 
   return {
+		
+		async sendMsgCreatePermanentLockedAccount({ value, fee, memo }: sendMsgCreatePermanentLockedAccountParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreatePermanentLockedAccount: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreatePermanentLockedAccount({ value: MsgCreatePermanentLockedAccount.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreatePermanentLockedAccount: Could not broadcast Tx: '+ e.message)
+			}
+		},
 		
 		async sendMsgCreateVestingAccount({ value, fee, memo }: sendMsgCreateVestingAccountParams): Promise<DeliverTxResponse> {
 			if (!signer) {
@@ -91,20 +105,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgCreatePermanentLockedAccount({ value, fee, memo }: sendMsgCreatePermanentLockedAccountParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreatePermanentLockedAccount: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreatePermanentLockedAccount({ value: MsgCreatePermanentLockedAccount.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		
+		msgCreatePermanentLockedAccount({ value }: msgCreatePermanentLockedAccountParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount", value: MsgCreatePermanentLockedAccount.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreatePermanentLockedAccount: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:MsgCreatePermanentLockedAccount: Could not create message: ' + e.message)
 			}
 		},
-		
 		
 		msgCreateVestingAccount({ value }: msgCreateVestingAccountParams): EncodeObject {
 			try {
@@ -119,14 +127,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount", value: MsgCreatePeriodicVestingAccount.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgCreatePeriodicVestingAccount: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCreatePermanentLockedAccount({ value }: msgCreatePermanentLockedAccountParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount", value: MsgCreatePermanentLockedAccount.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCreatePermanentLockedAccount: Could not create message: ' + e.message)
 			}
 		},
 		
