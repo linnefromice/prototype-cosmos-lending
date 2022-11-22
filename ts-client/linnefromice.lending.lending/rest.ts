@@ -29,7 +29,6 @@ export interface LendingPairPool {
    * signatures required by gogoproto.
    */
   assetLiquidity?: V1Beta1Coin;
-  assetLpCoinDenom?: string;
 
   /** @format uint64 */
   assetTotalNormalDeposited?: string;
@@ -47,7 +46,6 @@ export interface LendingPairPool {
    * signatures required by gogoproto.
    */
   shadowLiquidity?: V1Beta1Coin;
-  shadowLpCoinDenom?: string;
 
   /** @format uint64 */
   shadowTotalNormalDeposited?: string;

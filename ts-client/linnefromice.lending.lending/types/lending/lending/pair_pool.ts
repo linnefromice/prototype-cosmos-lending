@@ -10,12 +10,10 @@ export interface PairPool {
   address: string;
   poolId: number;
   assetLiquidity: Coin | undefined;
-  assetLpCoinDenom: string;
   assetTotalNormalDeposited: number;
   assetTotalConlyDeposited: number;
   assetTotalBorrowed: number;
   shadowLiquidity: Coin | undefined;
-  shadowLpCoinDenom: string;
   shadowTotalNormalDeposited: number;
   shadowTotalConlyDeposited: number;
   shadowTotalBorrowed: number;
@@ -28,12 +26,10 @@ function createBasePairPool(): PairPool {
     address: "",
     poolId: 0,
     assetLiquidity: undefined,
-    assetLpCoinDenom: "",
     assetTotalNormalDeposited: 0,
     assetTotalConlyDeposited: 0,
     assetTotalBorrowed: 0,
     shadowLiquidity: undefined,
-    shadowLpCoinDenom: "",
     shadowTotalNormalDeposited: 0,
     shadowTotalConlyDeposited: 0,
     shadowTotalBorrowed: 0,
@@ -55,35 +51,29 @@ export const PairPool = {
     if (message.assetLiquidity !== undefined) {
       Coin.encode(message.assetLiquidity, writer.uint32(34).fork()).ldelim();
     }
-    if (message.assetLpCoinDenom !== "") {
-      writer.uint32(42).string(message.assetLpCoinDenom);
-    }
     if (message.assetTotalNormalDeposited !== 0) {
-      writer.uint32(48).uint64(message.assetTotalNormalDeposited);
+      writer.uint32(40).uint64(message.assetTotalNormalDeposited);
     }
     if (message.assetTotalConlyDeposited !== 0) {
-      writer.uint32(56).uint64(message.assetTotalConlyDeposited);
+      writer.uint32(48).uint64(message.assetTotalConlyDeposited);
     }
     if (message.assetTotalBorrowed !== 0) {
-      writer.uint32(64).uint64(message.assetTotalBorrowed);
+      writer.uint32(56).uint64(message.assetTotalBorrowed);
     }
     if (message.shadowLiquidity !== undefined) {
-      Coin.encode(message.shadowLiquidity, writer.uint32(74).fork()).ldelim();
-    }
-    if (message.shadowLpCoinDenom !== "") {
-      writer.uint32(82).string(message.shadowLpCoinDenom);
+      Coin.encode(message.shadowLiquidity, writer.uint32(66).fork()).ldelim();
     }
     if (message.shadowTotalNormalDeposited !== 0) {
-      writer.uint32(88).uint64(message.shadowTotalNormalDeposited);
+      writer.uint32(72).uint64(message.shadowTotalNormalDeposited);
     }
     if (message.shadowTotalConlyDeposited !== 0) {
-      writer.uint32(96).uint64(message.shadowTotalConlyDeposited);
+      writer.uint32(80).uint64(message.shadowTotalConlyDeposited);
     }
     if (message.shadowTotalBorrowed !== 0) {
-      writer.uint32(104).uint64(message.shadowTotalBorrowed);
+      writer.uint32(88).uint64(message.shadowTotalBorrowed);
     }
     if (message.lastUpdated !== 0) {
-      writer.uint32(112).uint64(message.lastUpdated);
+      writer.uint32(96).uint64(message.lastUpdated);
     }
     return writer;
   },
@@ -108,33 +98,27 @@ export const PairPool = {
           message.assetLiquidity = Coin.decode(reader, reader.uint32());
           break;
         case 5:
-          message.assetLpCoinDenom = reader.string();
-          break;
-        case 6:
           message.assetTotalNormalDeposited = longToNumber(reader.uint64() as Long);
           break;
-        case 7:
+        case 6:
           message.assetTotalConlyDeposited = longToNumber(reader.uint64() as Long);
           break;
-        case 8:
+        case 7:
           message.assetTotalBorrowed = longToNumber(reader.uint64() as Long);
           break;
-        case 9:
+        case 8:
           message.shadowLiquidity = Coin.decode(reader, reader.uint32());
           break;
-        case 10:
-          message.shadowLpCoinDenom = reader.string();
-          break;
-        case 11:
+        case 9:
           message.shadowTotalNormalDeposited = longToNumber(reader.uint64() as Long);
           break;
-        case 12:
+        case 10:
           message.shadowTotalConlyDeposited = longToNumber(reader.uint64() as Long);
           break;
-        case 13:
+        case 11:
           message.shadowTotalBorrowed = longToNumber(reader.uint64() as Long);
           break;
-        case 14:
+        case 12:
           message.lastUpdated = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -151,12 +135,10 @@ export const PairPool = {
       address: isSet(object.address) ? String(object.address) : "",
       poolId: isSet(object.poolId) ? Number(object.poolId) : 0,
       assetLiquidity: isSet(object.assetLiquidity) ? Coin.fromJSON(object.assetLiquidity) : undefined,
-      assetLpCoinDenom: isSet(object.assetLpCoinDenom) ? String(object.assetLpCoinDenom) : "",
       assetTotalNormalDeposited: isSet(object.assetTotalNormalDeposited) ? Number(object.assetTotalNormalDeposited) : 0,
       assetTotalConlyDeposited: isSet(object.assetTotalConlyDeposited) ? Number(object.assetTotalConlyDeposited) : 0,
       assetTotalBorrowed: isSet(object.assetTotalBorrowed) ? Number(object.assetTotalBorrowed) : 0,
       shadowLiquidity: isSet(object.shadowLiquidity) ? Coin.fromJSON(object.shadowLiquidity) : undefined,
-      shadowLpCoinDenom: isSet(object.shadowLpCoinDenom) ? String(object.shadowLpCoinDenom) : "",
       shadowTotalNormalDeposited: isSet(object.shadowTotalNormalDeposited)
         ? Number(object.shadowTotalNormalDeposited)
         : 0,
@@ -173,7 +155,6 @@ export const PairPool = {
     message.poolId !== undefined && (obj.poolId = Math.round(message.poolId));
     message.assetLiquidity !== undefined
       && (obj.assetLiquidity = message.assetLiquidity ? Coin.toJSON(message.assetLiquidity) : undefined);
-    message.assetLpCoinDenom !== undefined && (obj.assetLpCoinDenom = message.assetLpCoinDenom);
     message.assetTotalNormalDeposited !== undefined
       && (obj.assetTotalNormalDeposited = Math.round(message.assetTotalNormalDeposited));
     message.assetTotalConlyDeposited !== undefined
@@ -181,7 +162,6 @@ export const PairPool = {
     message.assetTotalBorrowed !== undefined && (obj.assetTotalBorrowed = Math.round(message.assetTotalBorrowed));
     message.shadowLiquidity !== undefined
       && (obj.shadowLiquidity = message.shadowLiquidity ? Coin.toJSON(message.shadowLiquidity) : undefined);
-    message.shadowLpCoinDenom !== undefined && (obj.shadowLpCoinDenom = message.shadowLpCoinDenom);
     message.shadowTotalNormalDeposited !== undefined
       && (obj.shadowTotalNormalDeposited = Math.round(message.shadowTotalNormalDeposited));
     message.shadowTotalConlyDeposited !== undefined
@@ -199,14 +179,12 @@ export const PairPool = {
     message.assetLiquidity = (object.assetLiquidity !== undefined && object.assetLiquidity !== null)
       ? Coin.fromPartial(object.assetLiquidity)
       : undefined;
-    message.assetLpCoinDenom = object.assetLpCoinDenom ?? "";
     message.assetTotalNormalDeposited = object.assetTotalNormalDeposited ?? 0;
     message.assetTotalConlyDeposited = object.assetTotalConlyDeposited ?? 0;
     message.assetTotalBorrowed = object.assetTotalBorrowed ?? 0;
     message.shadowLiquidity = (object.shadowLiquidity !== undefined && object.shadowLiquidity !== null)
       ? Coin.fromPartial(object.shadowLiquidity)
       : undefined;
-    message.shadowLpCoinDenom = object.shadowLpCoinDenom ?? "";
     message.shadowTotalNormalDeposited = object.shadowTotalNormalDeposited ?? 0;
     message.shadowTotalConlyDeposited = object.shadowTotalConlyDeposited ?? 0;
     message.shadowTotalBorrowed = object.shadowTotalBorrowed ?? 0;
