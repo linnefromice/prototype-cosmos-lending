@@ -24,9 +24,18 @@ const (
 )
 
 const (
-	PoolEventId = "id"
+	PoolEventId     = "id"
+	PoolEventAmount = "amount"
 
 	PoolAddedEventType        = "pool-added"
 	PoolAddedEventAssetDenom  = "asset-denom"
 	PoolAddedEventShadowDenom = "shadow-denom"
+
+	PoolDepositedEventType = "pool-deposited"
+
+	PoolWithdrawedEventType = "pool-withdrawed"
+
+	PoolBorrowedEventType = "pool-borrowed"
+
+	PoolRepayedEventType = "pool-repayed"
 )
