@@ -22,3 +22,20 @@ const (
 	PairPoolKey      = "PairPool/value/"
 	PairPoolCountKey = "PairPool/count/"
 )
+
+const (
+	PoolEventId     = "id"
+	PoolEventAmount = "amount"
+
+	PoolAddedEventType        = "pool-added"
+	PoolAddedEventAssetDenom  = "asset-denom"
+	PoolAddedEventShadowDenom = "shadow-denom"
+
+	PoolDepositedEventType = "pool-deposited"
+
+	PoolWithdrawedEventType = "pool-withdrawed"
+
+	PoolBorrowedEventType = "pool-borrowed"
+
+	PoolRepayedEventType = "pool-repayed"
+)

@@ -11,6 +11,11 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
+type PoolServiceRes struct {
+	Id     uint64
+	Amount uint64
+}
+
 // func newPairPoolAddress(poolId uint64) sdk.AccAddress {
 // 	key := append([]byte("pairpool"), sdk.Uint64ToBigEndian(poolId)...)
 // 	return address.Module(types.ModuleName, key)
@@ -82,11 +87,11 @@ func (k Keeper) AddPool(ctx sdk.Context, msg *types.MsgAddPool) (types.PairPool,
 	return pool, nil
 }
 
-func (k Keeper) DepositToPairPool(ctx sdk.Context, msg *types.MsgDeposit) error {
+func (k Keeper) DepositToPairPool(ctx sdk.Context, msg *types.MsgDeposit) (PoolServiceRes, error) {
 	// sender, _ := sdk.AccAddressFromBech32(msg.Creator)
 	pool, found := k.GetPairPool(ctx, msg.PoolId)
 	if !found {
-		return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
+		return PoolServiceRes{}, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
 	}
 
 	// validation
@@ -148,15 +153,18 @@ func (k Keeper) DepositToPairPool(ctx sdk.Context, msg *types.MsgDeposit) error 
 	// Update state
 	k.SetPairPool(ctx, pool)
 
-	return nil
+	return PoolServiceRes{
+		Id:     pool.Id,
+		Amount: msg.Amount,
+	}, nil
 }
 
-func (k Keeper) WithdrawFromPairPool(ctx sdk.Context, msg *types.MsgWithdraw) error {
+func (k Keeper) WithdrawFromPairPool(ctx sdk.Context, msg *types.MsgWithdraw) (PoolServiceRes, error) {
 	sender, _ := sdk.AccAddressFromBech32(msg.Creator)
 
 	pool, found := k.GetPairPool(ctx, msg.PoolId)
 	if !found {
-		return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
+		return PoolServiceRes{}, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
 	}
 
 	// validation
@@ -171,7 +179,7 @@ func (k Keeper) WithdrawFromPairPool(ctx sdk.Context, msg *types.MsgWithdraw) er
 	}
 	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, sdk.NewCoins(coin))
 	if err != nil {
-		return err
+		return PoolServiceRes{}, err
 	}
 
 	// TODO: consider conly
@@ -184,15 +192,18 @@ func (k Keeper) WithdrawFromPairPool(ctx sdk.Context, msg *types.MsgWithdraw) er
 	// Update state
 	k.SetPairPool(ctx, pool)
 
-	return nil
+	return PoolServiceRes{
+		Id:     pool.Id,
+		Amount: msg.Amount,
+	}, nil
 }
 
-func (k Keeper) BorrowFromPairPool(ctx sdk.Context, msg *types.MsgBorrow) error {
+func (k Keeper) BorrowFromPairPool(ctx sdk.Context, msg *types.MsgBorrow) (PoolServiceRes, error) {
 	sender, _ := sdk.AccAddressFromBech32(msg.Creator)
 
 	pool, found := k.GetPairPool(ctx, msg.PoolId)
 	if !found {
-		return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
+		return PoolServiceRes{}, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
 	}
 
 	// validation
@@ -207,11 +218,11 @@ func (k Keeper) BorrowFromPairPool(ctx sdk.Context, msg *types.MsgBorrow) error 
 	}
 	err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
 	if err != nil {
-		return err
+		return PoolServiceRes{}, err
 	}
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, sdk.NewCoins(coin))
 	if err != nil {
-		return err
+		return PoolServiceRes{}, err
 	}
 
 	if msg.IsShadow {
@@ -223,15 +234,18 @@ func (k Keeper) BorrowFromPairPool(ctx sdk.Context, msg *types.MsgBorrow) error 
 	// Update state
 	k.SetPairPool(ctx, pool)
 
-	return nil
+	return PoolServiceRes{
+		Id:     pool.Id,
+		Amount: msg.Amount,
+	}, nil
 }
 
-func (k Keeper) RepayToPairPool(ctx sdk.Context, msg *types.MsgRepay) error {
+func (k Keeper) RepayToPairPool(ctx sdk.Context, msg *types.MsgRepay) (PoolServiceRes, error) {
 	sender, _ := sdk.AccAddressFromBech32(msg.Creator)
 
 	pool, found := k.GetPairPool(ctx, msg.PoolId)
 	if !found {
-		return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
+		return PoolServiceRes{}, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
 	}
 
 	// validation
@@ -246,7 +260,7 @@ func (k Keeper) RepayToPairPool(ctx sdk.Context, msg *types.MsgRepay) error {
 		coin = sdk.NewCoin(pool.AssetLiquidity.Denom, amount)
 	}
 	if err := k.bankKeeper.SendCoins(ctx, sender, moduleAddr, sdk.NewCoins(coin)); err != nil {
-		return err
+		return PoolServiceRes{}, err
 	}
 
 	if msg.IsShadow {
@@ -258,5 +272,8 @@ func (k Keeper) RepayToPairPool(ctx sdk.Context, msg *types.MsgRepay) error {
 	// Update state
 	k.SetPairPool(ctx, pool)
 
-	return nil
+	return PoolServiceRes{
+		Id:     pool.Id,
+		Amount: msg.Amount,
+	}, nil
 }
