@@ -201,9 +201,9 @@ func (k Keeper) BorrowFromPairPool(ctx sdk.Context, msg *types.MsgBorrow) error 
 	amount := sdk.NewInt(int64(msg.Amount))
 	var coin sdk.Coin
 	if msg.IsShadow {
-		coin = sdk.NewCoin(pool.ShadowLiquidity.Denom(), amount)
+		coin = sdk.NewCoin(pool.ShadowLiquidity.Denom, amount)
 	} else {
-		coin = sdk.NewCoin(pool.AssetLiquidity.Denom(), amount)
+		coin = sdk.NewCoin(pool.AssetLiquidity.Denom, amount)
 	}
 	err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
 	if err != nil {
@@ -241,9 +241,9 @@ func (k Keeper) RepayToPairPool(ctx sdk.Context, msg *types.MsgRepay) error {
 	amount := sdk.NewInt(int64(msg.Amount))
 	var coin sdk.Coin
 	if msg.IsShadow {
-		coin = sdk.NewCoin(pool.ShadowLiquidity.Denom(), amount)
+		coin = sdk.NewCoin(pool.ShadowLiquidity.Denom, amount)
 	} else {
-		coin = sdk.NewCoin(pool.AssetLiquidity.Denom(), amount)
+		coin = sdk.NewCoin(pool.AssetLiquidity.Denom, amount)
 	}
 	if err := k.bankKeeper.SendCoins(ctx, sender, moduleAddr, sdk.NewCoins(coin)); err != nil {
 		return err
