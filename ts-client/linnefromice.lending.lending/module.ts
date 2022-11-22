@@ -8,22 +8,16 @@ import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgBorrow } from "./types/lending/lending/tx";
-import { MsgDeposit } from "./types/lending/lending/tx";
 import { MsgRepay } from "./types/lending/lending/tx";
-import { MsgAddPool } from "./types/lending/lending/tx";
+import { MsgDeposit } from "./types/lending/lending/tx";
 import { MsgWithdraw } from "./types/lending/lending/tx";
+import { MsgAddPool } from "./types/lending/lending/tx";
 
 
-export { MsgBorrow, MsgDeposit, MsgRepay, MsgAddPool, MsgWithdraw };
+export { MsgBorrow, MsgRepay, MsgDeposit, MsgWithdraw, MsgAddPool };
 
 type sendMsgBorrowParams = {
   value: MsgBorrow,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgDepositParams = {
-  value: MsgDeposit,
   fee?: StdFee,
   memo?: string
 };
@@ -34,8 +28,8 @@ type sendMsgRepayParams = {
   memo?: string
 };
 
-type sendMsgAddPoolParams = {
-  value: MsgAddPool,
+type sendMsgDepositParams = {
+  value: MsgDeposit,
   fee?: StdFee,
   memo?: string
 };
@@ -46,25 +40,31 @@ type sendMsgWithdrawParams = {
   memo?: string
 };
 
+type sendMsgAddPoolParams = {
+  value: MsgAddPool,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgBorrowParams = {
   value: MsgBorrow,
-};
-
-type msgDepositParams = {
-  value: MsgDeposit,
 };
 
 type msgRepayParams = {
   value: MsgRepay,
 };
 
-type msgAddPoolParams = {
-  value: MsgAddPool,
+type msgDepositParams = {
+  value: MsgDeposit,
 };
 
 type msgWithdrawParams = {
   value: MsgWithdraw,
+};
+
+type msgAddPoolParams = {
+  value: MsgAddPool,
 };
 
 
@@ -99,20 +99,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgDeposit({ value, fee, memo }: sendMsgDepositParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgDeposit: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgDeposit({ value: MsgDeposit.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgDeposit: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgRepay({ value, fee, memo }: sendMsgRepayParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgRepay: Unable to sign Tx. Signer is not present.')
@@ -127,17 +113,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgAddPool({ value, fee, memo }: sendMsgAddPoolParams): Promise<DeliverTxResponse> {
+		async sendMsgDeposit({ value, fee, memo }: sendMsgDepositParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgAddPool: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgDeposit: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgAddPool({ value: MsgAddPool.fromPartial(value) })
+				let msg = this.msgDeposit({ value: MsgDeposit.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgAddPool: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgDeposit: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -155,20 +141,26 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgAddPool({ value, fee, memo }: sendMsgAddPoolParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgAddPool: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgAddPool({ value: MsgAddPool.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgAddPool: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		
 		msgBorrow({ value }: msgBorrowParams): EncodeObject {
 			try {
 				return { typeUrl: "/linnefromice.lending.lending.MsgBorrow", value: MsgBorrow.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgBorrow: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgDeposit({ value }: msgDepositParams): EncodeObject {
-			try {
-				return { typeUrl: "/linnefromice.lending.lending.MsgDeposit", value: MsgDeposit.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgDeposit: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -180,11 +172,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgAddPool({ value }: msgAddPoolParams): EncodeObject {
+		msgDeposit({ value }: msgDepositParams): EncodeObject {
 			try {
-				return { typeUrl: "/linnefromice.lending.lending.MsgAddPool", value: MsgAddPool.fromPartial( value ) }  
+				return { typeUrl: "/linnefromice.lending.lending.MsgDeposit", value: MsgDeposit.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgAddPool: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgDeposit: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -193,6 +185,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/linnefromice.lending.lending.MsgWithdraw", value: MsgWithdraw.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgWithdraw: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgAddPool({ value }: msgAddPoolParams): EncodeObject {
+			try {
+				return { typeUrl: "/linnefromice.lending.lending.MsgAddPool", value: MsgAddPool.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgAddPool: Could not create message: ' + e.message)
 			}
 		},
 		
