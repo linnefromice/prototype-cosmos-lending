@@ -7,16 +7,16 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgBorrow } from "./types/lending/lending/tx";
-import { MsgWithdraw } from "./types/lending/lending/tx";
 import { MsgAddPool } from "./types/lending/lending/tx";
+import { MsgWithdraw } from "./types/lending/lending/tx";
 import { MsgDeposit } from "./types/lending/lending/tx";
+import { MsgBorrow } from "./types/lending/lending/tx";
 
 
-export { MsgBorrow, MsgWithdraw, MsgAddPool, MsgDeposit };
+export { MsgAddPool, MsgWithdraw, MsgDeposit, MsgBorrow };
 
-type sendMsgBorrowParams = {
-  value: MsgBorrow,
+type sendMsgAddPoolParams = {
+  value: MsgAddPool,
   fee?: StdFee,
   memo?: string
 };
@@ -27,33 +27,33 @@ type sendMsgWithdrawParams = {
   memo?: string
 };
 
-type sendMsgAddPoolParams = {
-  value: MsgAddPool,
-  fee?: StdFee,
-  memo?: string
-};
-
 type sendMsgDepositParams = {
   value: MsgDeposit,
   fee?: StdFee,
   memo?: string
 };
 
-
-type msgBorrowParams = {
+type sendMsgBorrowParams = {
   value: MsgBorrow,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type msgAddPoolParams = {
+  value: MsgAddPool,
 };
 
 type msgWithdrawParams = {
   value: MsgWithdraw,
 };
 
-type msgAddPoolParams = {
-  value: MsgAddPool,
-};
-
 type msgDepositParams = {
   value: MsgDeposit,
+};
+
+type msgBorrowParams = {
+  value: MsgBorrow,
 };
 
 
@@ -74,17 +74,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgBorrow({ value, fee, memo }: sendMsgBorrowParams): Promise<DeliverTxResponse> {
+		async sendMsgAddPool({ value, fee, memo }: sendMsgAddPoolParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgBorrow: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgAddPool: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgBorrow({ value: MsgBorrow.fromPartial(value) })
+				let msg = this.msgAddPool({ value: MsgAddPool.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgBorrow: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgAddPool: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -102,20 +102,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgAddPool({ value, fee, memo }: sendMsgAddPoolParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgAddPool: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgAddPool({ value: MsgAddPool.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgAddPool: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgDeposit({ value, fee, memo }: sendMsgDepositParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgDeposit: Unable to sign Tx. Signer is not present.')
@@ -130,12 +116,26 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgBorrow({ value }: msgBorrowParams): EncodeObject {
-			try {
-				return { typeUrl: "/linnefromice.lending.lending.MsgBorrow", value: MsgBorrow.fromPartial( value ) }  
+		async sendMsgBorrow({ value, fee, memo }: sendMsgBorrowParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgBorrow: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgBorrow({ value: MsgBorrow.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgBorrow: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgBorrow: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		
+		msgAddPool({ value }: msgAddPoolParams): EncodeObject {
+			try {
+				return { typeUrl: "/linnefromice.lending.lending.MsgAddPool", value: MsgAddPool.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgAddPool: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -147,19 +147,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgAddPool({ value }: msgAddPoolParams): EncodeObject {
-			try {
-				return { typeUrl: "/linnefromice.lending.lending.MsgAddPool", value: MsgAddPool.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgAddPool: Could not create message: ' + e.message)
-			}
-		},
-		
 		msgDeposit({ value }: msgDepositParams): EncodeObject {
 			try {
 				return { typeUrl: "/linnefromice.lending.lending.MsgDeposit", value: MsgDeposit.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgDeposit: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgBorrow({ value }: msgBorrowParams): EncodeObject {
+			try {
+				return { typeUrl: "/linnefromice.lending.lending.MsgBorrow", value: MsgBorrow.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgBorrow: Could not create message: ' + e.message)
 			}
 		},
 		
