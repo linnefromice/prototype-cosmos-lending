@@ -1,8 +1,11 @@
 package keeper
 
 import (
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	// "github.com/cosmos/cosmos-sdk/types/address"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/linnefromice/lending/x/lending/types"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -77,4 +80,183 @@ func (k Keeper) AddPool(ctx sdk.Context, msg *types.MsgAddPool) (types.PairPool,
 	k.AppendPairPool(ctx, pool)
 
 	return pool, nil
+}
+
+func (k Keeper) DepositToPairPool(ctx sdk.Context, msg *types.MsgDeposit) error {
+	// sender, _ := sdk.AccAddressFromBech32(msg.Creator)
+	pool, found := k.GetPairPool(ctx, msg.PoolId)
+	if !found {
+		return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
+	}
+
+	// validation
+
+	// execute
+	// moduleAddr := k.accountKeeper.GetModuleAddress(types.ModuleName)
+
+	// TODO: collect sended
+	// amount := sdk.NewInt(int64(msg.Amount))
+	// var coin sdk.Coin
+	// if msg.IsShadow {
+	// 	coin = sdk.NewCoin(pool.ShadowLiquidity.Denom, amount)
+	// } else {
+	// 	coin = sdk.NewCoin(pool.AssetLiquidity.Denom, amount)
+	// }
+
+	// if err := k.bankKeeper.SendCoins(ctx, sender, moduleAddr, sdk.NewCoins(coin)); err != nil {
+	// 	return err
+	// }
+
+	if msg.IsShadow {
+		// TODO: Send lp coin
+		// lpCoin := sdk.NewCoin(pool.GetShadowLpCoinDenom(), amount)
+		// err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(lpCoin))
+		// if err != nil {
+		// 	return err
+		// }
+		// err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, sdk.NewCoins(lpCoin))
+		// if err != nil {
+		// 	return err
+		// }
+
+		// Update stats
+		if msg.IsConly {
+			pool.ShadowTotalConlyDeposited += msg.Amount
+		} else {
+			pool.ShadowTotalNormalDeposited += msg.Amount
+		}
+	} else {
+		// TODO: Send lp coin
+		// lpCoin := sdk.NewCoin(pool.GetAssetLpCoinDenom(), amount)
+		// err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(lpCoin))
+		// if err != nil {
+		// 	return err
+		// }
+		// err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, sdk.NewCoins(lpCoin))
+		// if err != nil {
+		// 	return err
+		// }
+
+		// Update stats
+		if msg.IsConly {
+			pool.AssetTotalConlyDeposited += msg.Amount
+		} else {
+			pool.AssetTotalNormalDeposited += msg.Amount
+		}
+	}
+
+	// Update state
+	k.SetPairPool(ctx, pool)
+
+	return nil
+}
+
+func (k Keeper) WithdrawFromPairPool(ctx sdk.Context, msg *types.MsgWithdraw) error {
+	sender, _ := sdk.AccAddressFromBech32(msg.Creator)
+
+	pool, found := k.GetPairPool(ctx, msg.PoolId)
+	if !found {
+		return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
+	}
+
+	// validation
+
+	// execute
+	amount := sdk.NewInt(int64(msg.Amount))
+	var coin sdk.Coin
+	if msg.IsShadow {
+		coin = sdk.NewCoin(pool.ShadowLiquidity.Denom, amount)
+	} else {
+		coin = sdk.NewCoin(pool.AssetLiquidity.Denom, amount)
+	}
+	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, sdk.NewCoins(coin))
+	if err != nil {
+		return err
+	}
+
+	// TODO: consider conly
+	if msg.IsShadow {
+		pool.ShadowTotalNormalDeposited -= msg.Amount
+	} else {
+		pool.AssetTotalNormalDeposited -= msg.Amount
+	}
+
+	// Update state
+	k.SetPairPool(ctx, pool)
+
+	return nil
+}
+
+func (k Keeper) BorrowFromPairPool(ctx sdk.Context, msg *types.MsgBorrow) error {
+	sender, _ := sdk.AccAddressFromBech32(msg.Creator)
+
+	pool, found := k.GetPairPool(ctx, msg.PoolId)
+	if !found {
+		return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
+	}
+
+	// validation
+
+	// execute
+	amount := sdk.NewInt(int64(msg.Amount))
+	var coin sdk.Coin
+	if msg.IsShadow {
+		coin = sdk.NewCoin(pool.ShadowLiquidity.Denom, amount)
+	} else {
+		coin = sdk.NewCoin(pool.AssetLiquidity.Denom, amount)
+	}
+	err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
+	if err != nil {
+		return err
+	}
+	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, sdk.NewCoins(coin))
+	if err != nil {
+		return err
+	}
+
+	if msg.IsShadow {
+		pool.ShadowTotalBorrowed += msg.Amount
+	} else {
+		pool.AssetTotalBorrowed += msg.Amount
+	}
+
+	// Update state
+	k.SetPairPool(ctx, pool)
+
+	return nil
+}
+
+func (k Keeper) RepayToPairPool(ctx sdk.Context, msg *types.MsgRepay) error {
+	sender, _ := sdk.AccAddressFromBech32(msg.Creator)
+
+	pool, found := k.GetPairPool(ctx, msg.PoolId)
+	if !found {
+		return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
+	}
+
+	// validation
+
+	// execute
+	moduleAddr := k.accountKeeper.GetModuleAddress(types.ModuleName)
+	amount := sdk.NewInt(int64(msg.Amount))
+	var coin sdk.Coin
+	if msg.IsShadow {
+		coin = sdk.NewCoin(pool.ShadowLiquidity.Denom, amount)
+	} else {
+		coin = sdk.NewCoin(pool.AssetLiquidity.Denom, amount)
+	}
+	if err := k.bankKeeper.SendCoins(ctx, sender, moduleAddr, sdk.NewCoins(coin)); err != nil {
+		return err
+	}
+
+	if msg.IsShadow {
+		pool.ShadowTotalBorrowed -= msg.Amount
+	} else {
+		pool.AssetTotalBorrowed -= msg.Amount
+	}
+
+	// Update state
+	k.SetPairPool(ctx, pool)
+
+	return nil
 }

@@ -28,6 +28,22 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgAddPool int = 100
 
+	opWeightMsgDeposit = "op_weight_msg_deposit"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeposit int = 100
+
+	opWeightMsgBorrow = "op_weight_msg_borrow"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgBorrow int = 100
+
+	opWeightMsgWithdraw = "op_weight_msg_withdraw"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgWithdraw int = 100
+
+	opWeightMsgRepay = "op_weight_msg_repay"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRepay int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +87,50 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgAddPool,
 		lendingsimulation.SimulateMsgAddPool(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeposit int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeposit, &weightMsgDeposit, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeposit = defaultWeightMsgDeposit
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeposit,
+		lendingsimulation.SimulateMsgDeposit(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgBorrow int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgBorrow, &weightMsgBorrow, nil,
+		func(_ *rand.Rand) {
+			weightMsgBorrow = defaultWeightMsgBorrow
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgBorrow,
+		lendingsimulation.SimulateMsgBorrow(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgWithdraw int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgWithdraw, &weightMsgWithdraw, nil,
+		func(_ *rand.Rand) {
+			weightMsgWithdraw = defaultWeightMsgWithdraw
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgWithdraw,
+		lendingsimulation.SimulateMsgWithdraw(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRepay int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRepay, &weightMsgRepay, nil,
+		func(_ *rand.Rand) {
+			weightMsgRepay = defaultWeightMsgRepay
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRepay,
+		lendingsimulation.SimulateMsgRepay(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
