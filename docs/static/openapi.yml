@@ -74012,6 +74012,8 @@ definitions:
       poolId:
         type: string
         format: uint64
+  linnefromice.lending.lending.MsgBorrowResponse:
+    type: object
   linnefromice.lending.lending.MsgDepositResponse:
     type: object
   linnefromice.lending.lending.PairPool:

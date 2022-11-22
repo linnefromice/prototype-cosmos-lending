@@ -7,11 +7,18 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgBorrow } from "./types/lending/lending/tx";
 import { MsgDeposit } from "./types/lending/lending/tx";
 import { MsgAddPool } from "./types/lending/lending/tx";
 
 
-export { MsgDeposit, MsgAddPool };
+export { MsgBorrow, MsgDeposit, MsgAddPool };
+
+type sendMsgBorrowParams = {
+  value: MsgBorrow,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendMsgDepositParams = {
   value: MsgDeposit,
@@ -25,6 +32,10 @@ type sendMsgAddPoolParams = {
   memo?: string
 };
 
+
+type msgBorrowParams = {
+  value: MsgBorrow,
+};
 
 type msgDepositParams = {
   value: MsgDeposit,
@@ -51,6 +62,20 @@ interface TxClientOptions {
 export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
 
   return {
+		
+		async sendMsgBorrow({ value, fee, memo }: sendMsgBorrowParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgBorrow: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgBorrow({ value: MsgBorrow.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgBorrow: Could not broadcast Tx: '+ e.message)
+			}
+		},
 		
 		async sendMsgDeposit({ value, fee, memo }: sendMsgDepositParams): Promise<DeliverTxResponse> {
 			if (!signer) {
@@ -80,6 +105,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		
+		msgBorrow({ value }: msgBorrowParams): EncodeObject {
+			try {
+				return { typeUrl: "/linnefromice.lending.lending.MsgBorrow", value: MsgBorrow.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgBorrow: Could not create message: ' + e.message)
+			}
+		},
 		
 		msgDeposit({ value }: msgDepositParams): EncodeObject {
 			try {
