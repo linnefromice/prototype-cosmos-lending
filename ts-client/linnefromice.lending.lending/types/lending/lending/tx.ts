@@ -36,6 +36,16 @@ export interface MsgBorrow {
 export interface MsgBorrowResponse {
 }
 
+export interface MsgWithdraw {
+  creator: string;
+  poolId: number;
+  amount: number;
+  isShadow: boolean;
+}
+
+export interface MsgWithdrawResponse {
+}
+
 function createBaseMsgAddPool(): MsgAddPool {
   return { creator: "", amount: undefined, active: false };
 }
@@ -391,12 +401,128 @@ export const MsgBorrowResponse = {
   },
 };
 
+function createBaseMsgWithdraw(): MsgWithdraw {
+  return { creator: "", poolId: 0, amount: 0, isShadow: false };
+}
+
+export const MsgWithdraw = {
+  encode(message: MsgWithdraw, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.poolId !== 0) {
+      writer.uint32(16).uint64(message.poolId);
+    }
+    if (message.amount !== 0) {
+      writer.uint32(24).uint64(message.amount);
+    }
+    if (message.isShadow === true) {
+      writer.uint32(32).bool(message.isShadow);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdraw {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgWithdraw();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.poolId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.amount = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.isShadow = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgWithdraw {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      poolId: isSet(object.poolId) ? Number(object.poolId) : 0,
+      amount: isSet(object.amount) ? Number(object.amount) : 0,
+      isShadow: isSet(object.isShadow) ? Boolean(object.isShadow) : false,
+    };
+  },
+
+  toJSON(message: MsgWithdraw): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.poolId !== undefined && (obj.poolId = Math.round(message.poolId));
+    message.amount !== undefined && (obj.amount = Math.round(message.amount));
+    message.isShadow !== undefined && (obj.isShadow = message.isShadow);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgWithdraw>, I>>(object: I): MsgWithdraw {
+    const message = createBaseMsgWithdraw();
+    message.creator = object.creator ?? "";
+    message.poolId = object.poolId ?? 0;
+    message.amount = object.amount ?? 0;
+    message.isShadow = object.isShadow ?? false;
+    return message;
+  },
+};
+
+function createBaseMsgWithdrawResponse(): MsgWithdrawResponse {
+  return {};
+}
+
+export const MsgWithdrawResponse = {
+  encode(_: MsgWithdrawResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgWithdrawResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgWithdrawResponse {
+    return {};
+  },
+
+  toJSON(_: MsgWithdrawResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgWithdrawResponse>, I>>(_: I): MsgWithdrawResponse {
+    const message = createBaseMsgWithdrawResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   AddPool(request: MsgAddPool): Promise<MsgAddPoolResponse>;
   Deposit(request: MsgDeposit): Promise<MsgDepositResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   Borrow(request: MsgBorrow): Promise<MsgBorrowResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  Withdraw(request: MsgWithdraw): Promise<MsgWithdrawResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -406,6 +532,7 @@ export class MsgClientImpl implements Msg {
     this.AddPool = this.AddPool.bind(this);
     this.Deposit = this.Deposit.bind(this);
     this.Borrow = this.Borrow.bind(this);
+    this.Withdraw = this.Withdraw.bind(this);
   }
   AddPool(request: MsgAddPool): Promise<MsgAddPoolResponse> {
     const data = MsgAddPool.encode(request).finish();
@@ -423,6 +550,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgBorrow.encode(request).finish();
     const promise = this.rpc.request("linnefromice.lending.lending.Msg", "Borrow", data);
     return promise.then((data) => MsgBorrowResponse.decode(new _m0.Reader(data)));
+  }
+
+  Withdraw(request: MsgWithdraw): Promise<MsgWithdrawResponse> {
+    const data = MsgWithdraw.encode(request).finish();
+    const promise = this.rpc.request("linnefromice.lending.lending.Msg", "Withdraw", data);
+    return promise.then((data) => MsgWithdrawResponse.decode(new _m0.Reader(data)));
   }
 }
 

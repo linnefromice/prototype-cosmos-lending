@@ -12,6 +12,7 @@ service Msg {
       rpc AddPool(MsgAddPool) returns (MsgAddPoolResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Borrow(MsgBorrow) returns (MsgBorrowResponse);
+  rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -44,6 +45,16 @@ message MsgBorrow {
 }
 
 message MsgBorrowResponse {
+}
+
+message MsgWithdraw {
+  string creator = 1;
+  uint64 poolId = 2;
+  uint64 amount = 3;
+  bool isShadow = 4;
+}
+
+message MsgWithdrawResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
