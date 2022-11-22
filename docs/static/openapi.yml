@@ -74016,6 +74016,8 @@ definitions:
     type: object
   linnefromice.lending.lending.MsgDepositResponse:
     type: object
+  linnefromice.lending.lending.MsgRepayResponse:
+    type: object
   linnefromice.lending.lending.MsgWithdrawResponse:
     type: object
   linnefromice.lending.lending.PairPool:

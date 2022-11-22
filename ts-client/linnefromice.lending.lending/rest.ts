@@ -18,6 +18,8 @@ export type LendingMsgBorrowResponse = object;
 
 export type LendingMsgDepositResponse = object;
 
+export type LendingMsgRepayResponse = object;
+
 export type LendingMsgWithdrawResponse = object;
 
 export interface LendingPairPool {
