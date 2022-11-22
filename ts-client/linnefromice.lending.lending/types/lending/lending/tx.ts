@@ -15,6 +15,17 @@ export interface MsgAddPoolResponse {
   poolId: number;
 }
 
+export interface MsgDeposit {
+  creator: string;
+  poolId: number;
+  amount: number;
+  isShadow: boolean;
+  isConly: boolean;
+}
+
+export interface MsgDepositResponse {
+}
+
 function createBaseMsgAddPool(): MsgAddPool {
   return { creator: "", amount: undefined, active: false };
 }
@@ -131,10 +142,135 @@ export const MsgAddPoolResponse = {
   },
 };
 
+function createBaseMsgDeposit(): MsgDeposit {
+  return { creator: "", poolId: 0, amount: 0, isShadow: false, isConly: false };
+}
+
+export const MsgDeposit = {
+  encode(message: MsgDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.poolId !== 0) {
+      writer.uint32(16).uint64(message.poolId);
+    }
+    if (message.amount !== 0) {
+      writer.uint32(24).uint64(message.amount);
+    }
+    if (message.isShadow === true) {
+      writer.uint32(32).bool(message.isShadow);
+    }
+    if (message.isConly === true) {
+      writer.uint32(40).bool(message.isConly);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeposit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeposit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.poolId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.amount = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.isShadow = reader.bool();
+          break;
+        case 5:
+          message.isConly = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeposit {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      poolId: isSet(object.poolId) ? Number(object.poolId) : 0,
+      amount: isSet(object.amount) ? Number(object.amount) : 0,
+      isShadow: isSet(object.isShadow) ? Boolean(object.isShadow) : false,
+      isConly: isSet(object.isConly) ? Boolean(object.isConly) : false,
+    };
+  },
+
+  toJSON(message: MsgDeposit): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.poolId !== undefined && (obj.poolId = Math.round(message.poolId));
+    message.amount !== undefined && (obj.amount = Math.round(message.amount));
+    message.isShadow !== undefined && (obj.isShadow = message.isShadow);
+    message.isConly !== undefined && (obj.isConly = message.isConly);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDeposit>, I>>(object: I): MsgDeposit {
+    const message = createBaseMsgDeposit();
+    message.creator = object.creator ?? "";
+    message.poolId = object.poolId ?? 0;
+    message.amount = object.amount ?? 0;
+    message.isShadow = object.isShadow ?? false;
+    message.isConly = object.isConly ?? false;
+    return message;
+  },
+};
+
+function createBaseMsgDepositResponse(): MsgDepositResponse {
+  return {};
+}
+
+export const MsgDepositResponse = {
+  encode(_: MsgDepositResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDepositResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDepositResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDepositResponse {
+    return {};
+  },
+
+  toJSON(_: MsgDepositResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDepositResponse>, I>>(_: I): MsgDepositResponse {
+    const message = createBaseMsgDepositResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   AddPool(request: MsgAddPool): Promise<MsgAddPoolResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  Deposit(request: MsgDeposit): Promise<MsgDepositResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -142,11 +278,18 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.AddPool = this.AddPool.bind(this);
+    this.Deposit = this.Deposit.bind(this);
   }
   AddPool(request: MsgAddPool): Promise<MsgAddPoolResponse> {
     const data = MsgAddPool.encode(request).finish();
     const promise = this.rpc.request("linnefromice.lending.lending.Msg", "AddPool", data);
     return promise.then((data) => MsgAddPoolResponse.decode(new _m0.Reader(data)));
+  }
+
+  Deposit(request: MsgDeposit): Promise<MsgDepositResponse> {
+    const data = MsgDeposit.encode(request).finish();
+    const promise = this.rpc.request("linnefromice.lending.lending.Msg", "Deposit", data);
+    return promise.then((data) => MsgDepositResponse.decode(new _m0.Reader(data)));
   }
 }
 

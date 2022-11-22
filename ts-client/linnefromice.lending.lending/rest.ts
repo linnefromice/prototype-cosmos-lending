@@ -14,6 +14,8 @@ export interface LendingMsgAddPoolResponse {
   poolId?: string;
 }
 
+export type LendingMsgDepositResponse = object;
+
 export interface LendingPairPool {
   /** @format uint64 */
   id?: string;

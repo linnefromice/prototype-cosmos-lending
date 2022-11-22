@@ -7,10 +7,17 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgDeposit } from "./types/lending/lending/tx";
 import { MsgAddPool } from "./types/lending/lending/tx";
 
 
-export { MsgAddPool };
+export { MsgDeposit, MsgAddPool };
+
+type sendMsgDepositParams = {
+  value: MsgDeposit,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendMsgAddPoolParams = {
   value: MsgAddPool,
@@ -18,6 +25,10 @@ type sendMsgAddPoolParams = {
   memo?: string
 };
 
+
+type msgDepositParams = {
+  value: MsgDeposit,
+};
 
 type msgAddPoolParams = {
   value: MsgAddPool,
@@ -41,6 +52,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgDeposit({ value, fee, memo }: sendMsgDepositParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgDeposit: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgDeposit({ value: MsgDeposit.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgDeposit: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgAddPool({ value, fee, memo }: sendMsgAddPoolParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgAddPool: Unable to sign Tx. Signer is not present.')
@@ -55,6 +80,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		
+		msgDeposit({ value }: msgDepositParams): EncodeObject {
+			try {
+				return { typeUrl: "/linnefromice.lending.lending.MsgDeposit", value: MsgDeposit.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgDeposit: Could not create message: ' + e.message)
+			}
+		},
 		
 		msgAddPool({ value }: msgAddPoolParams): EncodeObject {
 			try {

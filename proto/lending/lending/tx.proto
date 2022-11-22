@@ -10,6 +10,7 @@ option go_package = "github.com/linnefromice/lending/x/lending/types";
 // Msg defines the Msg service.
 service Msg {
       rpc AddPool(MsgAddPool) returns (MsgAddPoolResponse);
+  rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -21,6 +22,17 @@ message MsgAddPool {
 
 message MsgAddPoolResponse {
   uint64 poolId = 1;
+}
+
+message MsgDeposit {
+  string creator = 1;
+  uint64 poolId = 2;
+  uint64 amount = 3;
+  bool isShadow = 4;
+  bool isConly = 5;
+}
+
+message MsgDepositResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
