@@ -10,8 +10,10 @@ import (
 func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*types.MsgWithdrawResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	err := k.Keeper.WithdrawFromPairPool(ctx, msg)
+	if err != nil {
+		panic(err)
+	}
 
 	return &types.MsgWithdrawResponse{}, nil
 }

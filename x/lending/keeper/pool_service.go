@@ -151,6 +151,42 @@ func (k Keeper) DepositToPairPool(ctx sdk.Context, msg *types.MsgDeposit) error 
 	return nil
 }
 
+func (k Keeper) WithdrawFromPairPool(ctx sdk.Context, msg *types.MsgWithdraw) error {
+	sender, _ := sdk.AccAddressFromBech32(msg.Creator)
+
+	pool, found := k.GetPairPool(ctx, msg.PoolId)
+	if !found {
+		return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.PoolId))
+	}
+
+	// validation
+
+	// execute
+	amount := sdk.NewInt(int64(msg.Amount))
+	var coin sdk.Coin
+	if msg.IsShadow {
+		coin = sdk.NewCoin(pool.ShadowLiquidity.Denom, amount)
+	} else {
+		coin = sdk.NewCoin(pool.AssetLiquidity.Denom, amount)
+	}
+	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, sdk.NewCoins(coin))
+	if err != nil {
+		return err
+	}
+
+	// TODO: consider conly
+	if msg.IsShadow {
+		pool.ShadowTotalNormalDeposited -= msg.Amount
+	} else {
+		pool.AssetTotalNormalDeposited -= msg.Amount
+	}
+
+	// Update state
+	k.SetPairPool(ctx, pool)
+
+	return nil
+}
+
 func (k Keeper) BorrowFromPairPool(ctx sdk.Context, msg *types.MsgBorrow) error {
 	sender, _ := sdk.AccAddressFromBech32(msg.Creator)
 
